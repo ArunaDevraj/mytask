@@ -1,0 +1,26 @@
+[
+ {
+  "add_total_row": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [],
+  "is_standard": "Yes",
+  "javascript": null,
+  "json": null,
+  "letter_head": "ICFOSS",
+  "modified": "2025-06-01 20:43:35.816594",
+  "module": "mytask",
+  "name": "Customer Group Summary Report",
+  "prepared_report": 0,
+  "query": "SELECT\n    customer_group AS \"Customer Group:Link/Customer Group:200\",\n    COUNT(name) AS \"Count:Int:100\"\nFROM\n    `tabCustomer`\nGROUP BY\n    customer_group\nORDER BY\n    customer_group;\n",
+  "ref_doctype": "Customer",
+  "reference_report": null,
+  "report_name": "Customer Group Summary Report",
+  "report_script": null,
+  "report_type": "Query Report",
+  "roles": [],
+  "timeout": 0
+ }
+]

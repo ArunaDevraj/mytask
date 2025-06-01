@@ -1,0 +1,24 @@
+[
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Sales Invoice",
+  "enabled": 1,
+  "modified": "2025-06-01 19:36:40.160092",
+  "module": "mytask",
+  "name": "Customer Link Filtering",
+  "script": "frappe.ui.form.on('Sales Invoice', {\n    refresh: function(frm) {\n        frm.set_query(\"customer\", function() {\n            return {\n                filters: {\n                    customer_group: \"Dieture Subscribers\"\n                }\n            };\n        });\n    }\n});\n",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Purchase Invoice",
+  "enabled": 1,
+  "modified": "2025-06-01 21:33:41.296238",
+  "module": "mytask",
+  "name": "Purchase Invoice Highlight",
+  "script": "frappe.ui.form.on('Purchase Invoice Item', {\n    item_code: function(frm, cdt, cdn) {\n        const row = locals[cdt][cdn];\n\n        if (row.item_code) {\n            frappe.call({\n                method: 'mytask.overrides.purchase_invoice.get_last_3_purchase_rates',\n                args: {\n                    item_code: row.item_code\n                },\n                callback: function(r) {\n                    if (r.message) {\n                        let rates = r.message;\n                        let max_rate = Math.max(...rates.map(r => r.rate));\n\n                        // Render HTML\n                        let html = `<table class=\"table table-bordered\">\n                            <thead>\n                                <tr>\n                                    <th>Posting Date</th>\n                                    <th>Supplier</th>\n                                    <th>Rate</th>\n                                </tr>\n                            </thead>\n                            <tbody>`;\n\n                        rates.forEach(entry => {\n                            const highlight = entry.rate === max_rate ? 'style=\"background-color: #ffffff; font-weight: bold;\"' : '';\n                            html += `\n                                <tr ${highlight}>\n                                    <td>${frappe.datetime.str_to_user(entry.posting_date)}</td>\n                                    <td>${entry.supplier}</td>\n                                    <td>${entry.rate}</td>\n                                </tr>`;\n                        });\n\n                        html += `</tbody></table>`;\n\n                        frm.set_df_property('custom_last_3_purchase_rates', 'options', html);\n                        frm.refresh_field('custom_last_3_purchase_rates');\n                    }\n                }\n            });\n        }\n    }\n});\n",
+  "view": "Form"
+ }
+]

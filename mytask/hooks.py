@@ -44,6 +44,9 @@ app_license = "mit"
 
 # include js in doctype views
 # doctype_js = {"doctype" : "public/js/doctype.js"}
+#doctype_js = {
+#    "Purchase Invoice": "public/js/purchase_invoice.js"
+#}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
@@ -129,9 +132,10 @@ app_license = "mit"
 # ---------------
 # Override standard doctype classes
 
-# override_doctype_class = {
+override_doctype_class = {
 # 	"ToDo": "custom_app.overrides.CustomToDo"
-# }
+	"Sales Invoice": "mytask.overrides.sales_invoice.CustomSalesInvoice"
+}
 
 # Document Events
 # ---------------
@@ -242,3 +246,23 @@ app_license = "mit"
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
 
+
+
+fixtures = [
+    {
+        "doctype": "Workflow",
+        "filters": [["name", "in", ["Supplier Evaluation Workflow"]]]
+    },
+    {
+        "doctype": "Client Script",
+        "filters": [["name", "in", ["Purchase Invoice Highlight", "Customer Link Filtering"]]]
+    },
+    {
+        "doctype": "Report",
+        "filters": [["name", "in", ["Customer Group Summary Report"]]]
+    },
+    {
+        "doctype": "Custom Field",
+        "filters": [["name", "in", ["Purchase Invoice-custom_last_3_purchase_rates"]]]
+    }
+]
